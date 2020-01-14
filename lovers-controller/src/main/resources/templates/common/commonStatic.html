@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment=header(title)>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta id="viewport" name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no"/>
+    <title th:text="${title}"></title>
+    <link rel="stylesheet" href="/bootstrap3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/bootstrap3/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/kendoUI/styles/kendo.common.min.css">
+    <link rel="stylesheet" href="/kendoUI/styles/kendo.default.min.css">
+    <link rel="stylesheet" href="/kendoUI/styles/kendo.default.mobile.min.css">
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1468037_chnyi999n4.css">
+    <script src="/jquery/jquery.min.js"></script>
+    <script src="/jquery/jquery.form.js"></script>
+    <script src="/bootstrap3/js/bootstrap.min.js"></script>
+    <script src="/layui/layui.js"></script>
+    <script src="/kendoUI/js/kendo.all.js"></script>
+    <script src="/kendoUI/js/messages/kendo.messages.zh-CN.js"></script>
+    <script src="//at.alicdn.com/t/font_1468037_qe2apcega9.js"></script>
+    <script src="/common/vue.min.js"></script>
+    <script src="/common/commonUtils.js"></script>
+    <style>
+        .icon {
+            width: 20px; height: 20px;
+            vertical-align: -0.15em;
+            fill: currentColor;
+            overflow: hidden;
+        }
+        li{
+            list-style-type :none;
+        }
+        .dropdown-menu .icon{
+            width: 14px; height: 14px;
+        }
+        .img_35{
+            width: 35px;
+            height: 35px;
+            border-radius: 4px;
+        }
+        .img_50{
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+        }
+        .img_100{
+            width: 100px;
+            height: 100px;
+            border-radius: 10px;
+        }
+
+        /* 设置滚动条的样式 */
+        ::-webkit-scrollbar {
+            width:6px;
+        }
+        /* 滚动槽 */
+        ::-webkit-scrollbar-track {
+            -webkit-box-shadow:inset006pxrgba(0,0,0,0.3);
+            border-radius:10px;
+        }
+        /* 滚动条滑块 */
+        ::-webkit-scrollbar-thumb {
+            border-radius:10px;
+            background:rgba(0,0,0,0.1);
+            -webkit-box-shadow:inset006pxrgba(0,0,0,0.5);
+        }
+        ::-webkit-scrollbar-thumb:window-inactive {
+            background:rgba(255,0,0,0.4);
+        }
+    </style>
+    <script th:inline="javascript">
+
+        /*<![CDATA[*/
+
+        var reqData=/*[[${reqData}]]*/
+        var cxt=/*[[${cxt}]]*/
+
+        /*]]>*/
+
+    </script>
+</head>
+<body>
+<!-- 通用JS -->
+<div th:fragment="common-top">
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Lovers</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="/album">相册</a></li>
+                    <li><a href="/space">空间</a></li>
+                    <li><a href="/action">活动</a></li>
+                    <li><a href="/mood/index">心情记录</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">One more separated link</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <form class="navbar-form navbar-left">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search">
+                    </div>
+                    <button type="submit" class="btn btn-default">搜索</button>
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li th:if="${#session.getAttribute('is_login')}" class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">我的 <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/message">
+                                <svg class="icon" aria-hidden="true" ><use xlink:href="#icon-xiaoxi"></use></svg>
+                                消息中心
+                            </a></li>
+                            <li><a href="/user/center/friend">
+                                <svg class="icon" aria-hidden="true" ><use xlink:href="#icon-guanyuwomen"></use></svg>
+                                我的好友
+                            </a></li>
+                            <li><a href="/user/center/userCenter">
+                                <svg class="icon" aria-hidden="true" ><use xlink:href="#icon-wode"></use></svg>
+                                个人资料
+                            </a></li>
+
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">退出</a></li>
+                        </ul>
+                    </li>
+
+                    <li th:unless="${#session.getAttribute('is_login')}"><a href="/login/toLogin">登录</a></li>
+                    <li th:unless="${#session.getAttribute('is_login')}"><a href="/login/toRegister">注册</a></li>
+
+                    <!--<a href="https://github.com/login/oauth/authorize?client_id=dbff3cbcff6c6e268db3&redirect_uri=http://localhost:8883/callback&scope=user&state=1">登录</a>-->
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+</div>
+
+<div th:fragment="common-footer">
+    <footer class="bs-docs-footer" style="margin-top: 20px;">
+        <div class="container">
+            <div class="k-card">
+                <div class="k-card-body" >
+                    <ul class="nav nav-pills nav-justified" style="text-align: center;">
+                        <li><a href="https://github.com/wzflxt2017/lovers">GitHub 仓库</a></li>
+                        <li><a href="/">首页</a></li>
+                        <li><a href="/help/index">帮助</a></li>
+                        <li><a href="/about/index">关于</a></li>
+                    </ul>
+                </div>
+                <div class="k-card-body">
+                    <p>
+                        Designed and built with all the love in the world by
+                        <a href="https://twitter.com/mdo" >@mdo</a>
+                        and
+                        <a href="https://twitter.com/fat" >@fat</a>
+                        . Maintained by the
+                        <a href="https://github.com/orgs/twbs/people">core team</a>
+                        with the help of
+                        <a href="https://github.com/twbs/bootstrap/graphs/contributors">our contributors</a>.
+                    </p>
+
+                    <p>
+                        本项目源码受
+                        <a rel="license" href="https://github.com/twbs/bootstrap/blob/master/LICENSE" >MIT</a>
+                        开源协议保护，文档受
+                        <a rel="license" href="https://creativecommons.org/licenses/by/3.0/" >CC BY 3.0</a>
+                        开源协议保护。
+                    </p>
+                </div>
+            </div>
+
+
+            <div class="k-card">
+
+            </div>
+
+
+        </div>
+    </footer>
+</div>
+
+</body>
+</html>

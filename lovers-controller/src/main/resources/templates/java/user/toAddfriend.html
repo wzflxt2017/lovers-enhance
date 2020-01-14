@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- 创建人：wangzefeng-->
+    <!-- 创建时间：2019-10-29 13:51-->
+    <th:block th:include="/common/commonStatic :: header('首页')"></th:block>
+    <style>
+        .my-line{
+            width: 100%;
+            border: 1px solid #333433;
+            margin: 5px 0;
+        }
+        .vam{
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid" id="vue_dom">
+    <div class="row text-center">
+        <div class="col-md-12">
+            <form role="form" class="form-inline">
+                <div class="form-group">
+                    <label for="userName">账号或昵称</label>
+                    <input type="text" class="form-control" id="userName" />
+                </div>
+                <button type="button" class="btn btn-primary" onclick="searchUser()">搜索</button>
+            </form>
+        </div>
+    </div>
+    <div class="my-line"></div>
+    <div class="row" v-if="notEmptyArray(sysUsers)" v-for="one in sysUsers">
+        <div class="col-sm-4" >
+            <img  style="width: 120px;height: 120px;" alt="Bootstrap Media Preview" :src="getImageUrl(one.userPhoto)" />
+        </div>
+        <div class="col-sm-6" style="height: 120px;padding-top: 20px">
+            <h3  v-text="one.userName"></h3>
+            <p>{{one.userBio}}</p>
+        </div>
+        <div class="col-sm-2">
+            <button type="button" class="btn btn-primary" :userId="one.userId" onclick="addUser(this)">添加</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    var vue=new Vue({
+        el:"#vue_dom",
+        data:{
+            sysUsers:""
+        },
+        methods:{
+            getImageUrl:getImageUrl,
+            notEmptyArray:notEmptyArray,
+            reloadVue:function(){
+                this.$forceUpdate();
+            }
+
+        }
+    });
+    var addUser=function (self) {
+        var userId = $(self).attr("userId");
+        $.ajax({
+            url:"/user/center/addUser",
+            type:"GET",
+            data:{
+                userId:parseInt(userId)
+            },
+            dataType:"JSON",
+            success:function(data){
+                if(data.success){
+                    closeSelf();
+                }
+            }
+        });
+    }
+    var searchUser=function () {
+        var userName = $("#userName").val();
+        $.ajax({
+            url:"/user/center/searchUsersByNameOrAccount",
+            type:"GET",
+            data:{
+                userName:userName
+            },
+            dataType:"json",
+            success:function(data){
+                vue.$data.sysUsers=data.data;
+            }
+        })
+    }
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lovers.common.mapper.UserMessageMapper">
+  <resultMap id="BaseResultMap" type="com.lovers.common.domain.UserMessage">
+    <id column="message_id" jdbcType="INTEGER" property="messageId" />
+    <result column="sender_id" jdbcType="INTEGER" property="senderId" />
+    <result column="receiver_id" jdbcType="INTEGER" property="receiverId" />
+    <result column="message_type" jdbcType="VARCHAR" property="messageType" />
+    <result column="message_content" jdbcType="VARCHAR" property="messageContent" />
+    <result column="is_read" jdbcType="INTEGER" property="isRead" />
+    <result column="message_file_name" jdbcType="VARCHAR" property="messageFileName" />
+    <result column="message_file_id" jdbcType="INTEGER" property="messageFileId" />
+    <result column="message_time" jdbcType="TIMESTAMP" property="messageTime" />
+    <association property="sender" select="getUserById" column="sender_id"/>
+    <association property="receiver" select="getUserById" column="receiver_id"/>
+  </resultMap>
+  <resultMap id="userBaseResultMap" type="com.lovers.common.domain.SysUser">
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="user_account" jdbcType="VARCHAR" property="userAccount" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="full_name" jdbcType="VARCHAR" property="fullName" />
+    <result column="user_bio" jdbcType="VARCHAR" property="userBio" />
+    <result column="user_gender" jdbcType="INTEGER" property="userGender" />
+    <result column="user_level" jdbcType="INTEGER" property="userLevel" />
+    <result column="user_role" jdbcType="VARCHAR" property="userRole" />
+    <result column="user_email" jdbcType="VARCHAR" property="userEmail" />
+    <result column="user_birthday" jdbcType="TIMESTAMP" property="userBirthday" />
+    <result column="user_address" jdbcType="VARCHAR" property="userAddress" />
+    <result column="user_location" jdbcType="VARCHAR" property="userLocation" />
+    <result column="user_photo" jdbcType="INTEGER" property="userPhoto" />
+    <result column="user_state" jdbcType="INTEGER" property="userState" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
+  </resultMap>
+
+  <sql id="user_Base_Column_List">
+    <!--返回user的字段-->
+    user_id, user_account, password, user_name, full_name, user_bio, user_gender, user_level,
+    user_role, user_email, user_birthday, user_address, user_location, user_photo, user_state,
+    create_time, modified_time
+  </sql>
+  <sql id="Base_Column_List">
+    message_id, sender_id, receiver_id, message_type, message_content, is_read, message_file_name,
+    message_file_id, message_time
+  </sql>
+
+  <select id="getUserById" resultMap="userBaseResultMap">
+    SELECT
+    <include refid="user_Base_Column_List"/>
+    FROM sys_user WHERE user_id=#{user_id}
+  </select>
+
+</mapper>

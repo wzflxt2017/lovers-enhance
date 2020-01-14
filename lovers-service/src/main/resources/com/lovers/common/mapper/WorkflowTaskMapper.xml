@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lovers.common.mapper.WorkflowTaskMapper">
+  <resultMap id="BaseResultMap" type="com.lovers.common.domain.WorkflowTask">
+    <id column="task_id" jdbcType="INTEGER" property="taskId" />
+    <result column="business_id" jdbcType="INTEGER" property="businessId" />
+    <result column="start_user_id" jdbcType="INTEGER" property="startUserId" />
+    <result column="start_user_name" jdbcType="VARCHAR" property="startUserName" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_user_id" jdbcType="INTEGER" property="endUserId" />
+    <result column="end_user_name" jdbcType="VARCHAR" property="endUserName" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="node_id" jdbcType="INTEGER" property="nodeId" />
+    <result column="link_id" jdbcType="INTEGER" property="linkId" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+  </resultMap>
+
+</mapper>

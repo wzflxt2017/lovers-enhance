@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- 创建人：wangzefeng-->
+    <!-- 创建时间：2019-10-25 14:01-->
+    <th:block th:include="/common/commonStatic :: header('首页')"></th:block>
+    <style>
+        html,body,#vue_dom,.container-fluid{
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+        body{
+            margin: 0;
+            overflow-y: hidden;
+        }
+        .container-fluid{
+            padding: 0 420px 0 0;
+        }
+        /*.icon{*/
+            /*width: 32px;*/
+            /*height: 32px;*/
+        /*}*/
+
+        .container-fluid>div{
+            height: 100%;
+        }
+
+        .friend_left{
+            width: 80px;float: left;
+        }
+        .friend_left li{
+            padding-top: 50px;
+        }
+
+
+        .friend_center{
+            width: 340px;float: left;
+            border-right: 1px solid #d2d2d2;
+        }
+        .friend_center>ul{
+            width: 100%;
+            background-color: #f5f3f1;
+        }
+        .friend_center .user_item{
+            cursor:pointer;
+        }
+        .friend_center ul>li{
+            height: 60px;
+            line-height: 60px;
+            padding:0 10px 0 10px;
+            border-bottom:1px solid #d2d2d2;
+        }
+
+
+        .friend_right{
+            float: right;
+            width: 100%;
+            margin-right: -420px;
+        }
+
+        .activeSvg{
+            color: #8eff2e;
+        }
+        .activeUser{
+            background-color: #c5c4c4!important;
+        }
+
+        .message{
+            height: 90%;
+        }
+        .message .message_header{
+            height: 40px;
+        }
+        .message .message_record{
+            border: 1px solid silver;
+            border-left: none;
+            border-right: none;
+            padding: 5px 0;
+            height: 70%;
+        }
+        .message .message_tool{
+
+        }
+        .message .message_content{
+            height:30%;
+        }
+        .message .message_content .text-left{
+            height: 100%;
+            width: 100%;
+            padding:5px 5px 50px 5px;
+        }
+
+        .message .message_content .text-right{
+            padding:0px 30px;
+        }
+        .message .message_record .receiverSpan{
+            padding:3px 5px;
+            border:1px solid #c0c0c0;
+            border-radius: 5px;
+        }
+        .message .message_record .text-right .receiverSpan{
+            background-color: #32593D;
+        }
+        .message_tool .icon{
+            width: 30px;
+            height: 30px;
+        }
+
+        /*
+                .layui-nav .layui-nav-item a,.layui-nav-itemed>a{
+                    color: #3e3e3e!important;
+                }
+                .layui-nav .layui-nav-item>a,.layui-nav .layui-nav-itemed>a{
+                    height: 25px;
+                    line-height: 25px;
+                    font-size: 10px;
+                }
+
+        */
+    </style>
+</head>
+<body>
+
+<div id="vue_dom">
+    <div class="container-fluid">
+        <div class="friend_left" style="">
+            <ul class="layui-nav layui-nav-tree" style="height: 100%;width: 100%">
+                <li class="layui-nav-item"><a href="/"><svg class="icon" aria-hidden="true" ><use xlink:href="#icon-shangchengshouye"></use></svg></a></li>
+                <li class="layui-nav-item" onclick="changeItem(this,'message')"><a ><svg class="icon" aria-hidden="true"  ><use xlink:href="#icon-xiaoxi1"></use></svg></a></li>
+                <li class="layui-nav-item" onclick="changeItem(this,'friend')"><a ><svg class="icon activeSvg" aria-hidden="true" ><use xlink:href="#icon-nicheng"></use></svg></a></li>
+            </ul>
+        </div>
+        <div class="friend_center" style="background-color: #f5f3f1">
+
+            <ul>
+                <li>
+                    <input type="text" style="width: 200px;display: inline;" class="form-control" placeholder="搜索">
+                    <button type="button" class="btn btn-primary" @click="toAddfriend()"><span class="glyphicon glyphicon-plus"></span> </button>
+                </li>
+            </ul>
+            <ul class="message" style="display: none;">
+                <li v-for="(one,index) in messageUsers" class="user_item"  :userIndex="index">
+                    <div style="float: left;">
+                        <img :src="getImageUrl(one.userPhoto)" style="width: 50px;height: 50px;">
+                    </div>
+                    <div style="float: left;margin-left: 10px;">
+                        <p style="height: 37px;line-height: 37px;font-weight: bold;" v-text="one.userName">昵称</p>
+                        <p style="height: 23px;line-height: 23px;font-weight: 200;" v-text="one.userBio">个性签名</p>
+                    </div>
+                </li>
+            </ul>
+            <ul class="friend">
+                <li v-for="(one,index) in sysUsers" class="user_item" :userIndex="index">
+                    <div style="float: left;">
+                        <img :src="getImageUrl(one.userPhoto)" class="img_50">
+                    </div>
+                    <div style="float: left;margin-left: 10px;">
+                        <p style="height: 37px;line-height: 37px;font-weight: bold;" v-text="one.userName">昵称</p>
+                        <p style="height: 23px;line-height: 23px;font-weight: 200;" v-text="one.userBio">个性签名</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="friend_right">
+            <div class="friend" style="width: 500px;margin: 50px;">
+                <template v-if="sysUser!=null&&sysUser!=''">
+                    <div>
+                        <div style="padding:0 0 50px 0;border-bottom: 1px solid #626262;">
+                            <h2>
+                                <img :src="getImageUrl(sysUser.userPhoto)" class="img_100" >
+                                <span v-text="sysUser.userName"></span>
+                                <svg v-if="sysUser.userGender==1" class="icon" style="color: #00B0FF" aria-hidden="true" >
+                                    <use xlink:href="#icon-nan"></use>
+                                </svg>
+                                <svg v-else-if="sysUser.userGender==2" class="icon" style="color: #b499b0" aria-hidden="true" >
+                                    <use xlink:href="#icon-nv"></use>
+                                </svg>
+                            </h2>
+                            <p v-text="sysUser.userBio"></p>
+                        </div>
+                        <div>
+
+                            <table class="layui-table" lay-skin="nob">
+                                <colgroup>
+                                    <col width="50">
+                                    <col width="200">
+                                </colgroup>
+                                <tbody>
+                                <tr>
+                                    <td>姓名</td>
+                                    <td v-text="sysUser.fullName">姓名</td>
+                                </tr>
+                                <tr>
+                                    <td>账号</td>
+                                    <td v-text="sysUser.userAccount">账号</td>
+                                </tr>
+                                <tr>
+                                    <td>地址</td>
+                                    <td v-text="sysUser.userAddress"></td>
+                                </tr>
+                                <tr>
+                                    <td>Email</td>
+                                    <td v-text="sysUser.userEmail"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="text-center">
+                            <p>
+                                <a class="layui-btn layui-btn-normal" href="#" @click="messageByUserId(sysUser.userId)" role="button">发送消息</a>
+                            </p>
+                        </div>
+                    </div>
+                </template>
+            </div>
+            <div class="message">
+                <template v-if="messageUser!=null&&messageUser!=''">
+                    <div class="message_header">
+                        <h3 v-text="messageUser.userName"></h3>
+                    </div>
+                    <div class="message_record">
+                        <template v-for="(one,index) in messages">
+                            <div v-if="one.isRead!=10&&one.senderId!=messageUser.userId" class="text-left">
+                                <span>
+                                    <img :src="getImageUrl(one.receiver.userPhoto)" class="img_35" />
+                                </span>
+                                <span class="receiverSpan" v-text="one.messageContent">
+
+                                </span>
+                            </div>
+                            <div v-if="one.isRead!=10&&one.senderId==messageUser.userId" class="text-right">
+                                <span>
+                                    <img :src="getImageUrl(one.receiver.userPhoto)" class="img_35"/>
+                                </span>
+                                <span class="receiverSpan" v-text="one.messageContent">
+
+                                </span>
+                            </div>
+                        </template>
+                    </div>
+                    <div class="message_tool">
+                        <div>
+                            <svg class="icon" style="color: #000000"  aria-hidden="true" >
+                                <use xlink:href="#icon-Happy-Wink"></use>
+                            </svg>
+
+                            <svg class="icon" style="color: #000000"  aria-hidden="true" >
+                                <use xlink:href="#icon-file"></use>
+                            </svg>
+
+                            <svg class="icon" style="color: #000000"  aria-hidden="true" >
+                                <use xlink:href="#icon-jianqie"></use>
+                            </svg>
+
+                        </div>
+                    </div>
+                    <div class="message_content">
+                        <div class="text-left" style="">
+                            <textarea  style="border: none;height: 100%;width: 100%;"></textarea>
+                        </div>
+                        <div class="text-right">
+                            <button type="button" class="btn btn-primary" style="margin-top:-50px; " @click="toAddfriend()">发送</button>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+    var vue=new Vue({
+        el:"#vue_dom",
+        data:{
+            sysUsers:"",
+            sysUser:"",
+            messageUsers:"",
+            messageUser:"",
+            messages:""
+        },
+        methods:{
+            getImageUrl:getImageUrl,
+            toAddfriend:function () {
+                layui.use('layer', function(){
+                    layer.open({
+                        type: 1,
+                        shade: 0.3,
+                        area: ['0','0'],
+                        maxmin: true,
+                        time:1,
+                        content: '动画',
+                        zIndex: 2, //重点1
+                        end: function(layero){
+                            layer.open({
+                                type: 2,
+                                shade: 0.3,
+                                area: ['800px','700px'],
+                                maxmin: true,
+                                anim: 2,
+                                content: '/user/center/toAddfriend',
+                                zIndex: 3, //重点1
+                                success: function(layero){
+                                    layer.setTop(layero); //重点2
+                                },
+                                cancel:function (index,layero) {
+                                    var body = layer.getChildFrame('body', index);
+                                    var iframeWin = window[layero.find('iframe')[0]['name']];
+                                    iframeWin.getRetData();
+
+                                }
+                            });
+                        }
+                    });
+
+                });
+            },
+            messageByUserId:function (userId) {
+                $.ajax({
+                    url:"/user/center/messageByUserId",
+                    type:"GET",
+                    data:{
+                        userId:userId
+                    },
+                    dataType:"JSON",
+                    success:function(data){
+                        if(data.success){
+                            vue.$data.messageUser=data.data;
+                        }
+                    }
+                })
+            }
+        },
+        watch:{
+            sysUsers:function(val, oldVal){
+                // DOM 还没有更新
+                this.$nextTick(function () {
+                    // DOM 现在更新了
+                    // `this` 绑定到当前实例
+                    $(".friend_center .user_item").mouseover(function(){
+                        $(this).css({"background-color":"#c5c4c4"})
+                    });
+                    $(".friend_center .user_item").mouseout(function(){
+                        $(this).css({"background-color":"#f5f3f1"})
+                    });
+
+                    $(".friend_center .friend .user_item").click(function(){
+                        // $(this).css({"background-color":"#c5c4c4"});
+                        // $(this).siblings().css({"background-color":"#f5f3f1"});
+                        $(this).siblings().removeClass("activeUser");
+                        $(this).addClass("activeUser");
+                        var userIndex=$(this).attr("userIndex")
+                        vue.$data.sysUser=vue.$data.sysUsers[parseInt(userIndex)];
+                    });
+                })
+            },
+            messageUsers:function(val){
+                this.$nextTick(function () {
+                    $(".friend_center .message .user_item").click(function(){
+                        // $(this).css({"background-color":"#c5c4c4"});
+                        // $(this).siblings().css({"background-color":"#f5f3f1"});
+                        $(this).siblings().removeClass("activeUser");
+                        $(this).addClass("activeUser");
+                        var userIndex=$(this).attr("userIndex")
+                        vue.$data.messageUser=vue.$data.messageUsers[parseInt(userIndex)];
+                    });
+                });
+            },
+            messageUser:function(val){
+                this.$nextTick(function () {
+                    $.ajax({
+                        url:"/user/center/findMessageByUserId",
+                        type:"GET",
+                        data:{
+                            userId:val.userId
+                        },
+                        dataType:"JSON",
+                        success:function(data){
+                            if(data.success){
+                                vue.$data.messages=data.data;
+                            }
+                        }
+                    })
+                })
+            }
+        }
+    });
+
+    $(function(){
+        $(".friend_left li:eq(2)").click();
+    })
+
+    function changeItem(self,item){
+        $(self).siblings().find("svg").removeClass("activeSvg");
+        $(self).find(".icon").addClass("activeSvg");
+        if(item=="message"){
+            $(".message").show();
+            $(".friend").hide();
+        }else{
+            $(".message").hide();
+            $(".friend").show();
+        }
+        $.ajax({
+            url:"/user/center/friendOrMessageList",
+            type:"GET",
+            data:{
+                type:item
+            },
+            dataType:"JSON",
+            success:function(data){
+                if(data.success){
+                    if(item=="message"){
+                        vue.$data.messageUsers=data.data;
+                    }else{
+                        vue.$data.sysUsers=data.data;
+                    }
+
+                }
+            }
+        })
+    }
+</script>
+
+</body>
+</html>

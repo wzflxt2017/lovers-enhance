@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:include="/common/commonStatic :: header('登录')"></th:block>
+</head>
+<body>
+
+<div class="jumbotron text-center">
+    <h1>lovers</h1>
+    <p>欢迎使用！为了更好的体验，下面开始注册属于你的个人账号吧！</p>
+    <p><a class="btn btn-primary btn-lg" href="#" role="button">分享给lover一起注册</a></p>
+
+
+</div>
+
+
+<!-- Top content -->
+<div class="top-content">
+
+    <div class="inner-bg">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3 form-box">
+                    <div class="form-top">
+                        <div class="form-top-left">
+                            <h3>注册</h3>
+                            <p>请完整填写以下信息：</p>
+                        </div>
+                        <div class="form-top-right">
+                            <i class="fa fa-envelope"></i>
+                        </div>
+                    </div>
+                    <div class="form-bottom contact-form text-center">
+                        <form id="myForm" role="form" method="post">
+                            <div class="form-group">
+                                <label class="sr-only" for="userAccount">用户名</label>
+                                <input type="text" name="userAccount" placeholder="用户名..." class="form-control" id="userAccount">
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only" for="userName">昵称</label>
+                                <input type="text" name="userName" placeholder="昵称.." class="form-control" id="userName">
+                            </div>
+                            <div class="form-group">
+                                <label class="sr-only" for="password">密码</label>
+                                <input type="password" name="password" placeholder="密码..." class="form-control" id="password">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="sr-only" for="password2">确认密码</label>
+                                <input type="password" name="password2" placeholder="确认密码..." class="form-control" id="password2">
+                            </div>
+
+                            <!--<div class="form-group">-->
+                                <!--<label class="sr-only" for="contact-message">个性签名</label>-->
+                                <!--<textarea name="message" placeholder="Message..." class="form-control" id="contact-message"></textarea>-->
+                            <!--</div>-->
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">确认注册</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 100px;">
+                <div class="text-center ">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default">回到首页</button>
+                        <button type="button" class="btn btn-default">前去登录</button>
+                        <button type="button" class="btn btn-default">帮助</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function(){
+        $("#myForm").ajaxForm({
+            url:"/login/register",
+            data:$("#myForm").serialize(),
+            type:"post",
+            dataType:"json",
+            beforeSubmit:function(data){
+
+            },
+            success:function(data){
+                if(data.success){
+                    location.href="/";
+                }else{
+                    alert(data.message);
+                }
+            },
+            clearForm:true
+        })
+    })
+</script>
+
+</body>
+</html>

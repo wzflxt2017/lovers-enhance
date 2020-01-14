@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- 创建人：wangzefeng-->
+    <!-- 创建时间：2019-10-24 10:24-->
+    <th:block th:include="/common/commonStatic :: header('用户中心')"></th:block>
+    <style>
+        .layui-form-label{
+            width: 120px;
+        }
+        .myDivider{
+            float:left;
+            margin-bottom: 20px;
+            margin-top: 20px;
+            /*margin-left: 10%;*/
+            width: 80%;
+            border-bottom: 1px solid #3e3e3e;
+        }
+    </style>
+</head>
+<body>
+<th:block th:include="/common/commonStatic :: common-top"></th:block>
+
+
+<div id="vue_dom">
+    <div class="container">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">个人信息</h3>
+            </div>
+            <div class="panel-body" style="padding: 20px;">
+                <div class="col-lg-4" style="padding-left: 50px;">
+                    <img :src="getImageUrl(sysUser.userPhoto)" id="photoImg" width="100px" height="100px;" role="button" onclick="$('#userPhoto').click()">
+                    <form id="photoForm" enctype="multipart/form-data" method="post" action="/user/center/updateUserPhoto">
+                        <input id="userPhoto" type="file" name="multipartFile" accept=".png,.jpeg,jpg" style="display: none;" onchange="updateUserPhoto(this)">
+                    </form>
+                </div>
+                <div role="separator" class="myDivider"></div>
+                <form class="layui-form" id="myForm">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
+                            <svg class="icon" aria-hidden="true" ><use xlink:href="#icon-nicheng"></use></svg>
+                            昵称
+                        </label>
+                        <div class="col-lg-4">
+                            <input type="text" name="userName" :value="sysUser.userName" required  lay-verify="required" placeholder="请输入昵称" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
+                            <svg class="icon" aria-hidden="true" ><use xlink:href="#icon-shenfenzheng"></use></svg>
+                            姓名
+                        </label>
+                        <div class="col-lg-4">
+                            <input type="text" name="fullName" :value="sysUser.fullName" required lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
+                            <svg class="icon" aria-hidden="true" ><use xlink:href="#icon-youxiang"></use></svg>
+                            邮箱
+                        </label>
+                        <div class="col-lg-4">
+                            <input type="text" name="userEmail" :value="sysUser.userEmail"  lay-verify="email" placeholder="请输入邮箱" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
+                            <svg class="icon" aria-hidden="true" ><use xlink:href="#icon-shengri"></use></svg>
+                            生日
+                        </label>
+                        <div class="col-lg-4">
+                            <input type="text" id="userBirthday" :value="sysUser.userBirthday" name="userBirthday" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">
+                            <svg class="icon" aria-hidden="true" ><use xlink:href="#icon-xingbie"></use></svg>
+                            性别</label>
+                        <div class="col-lg-4">
+                            <input type="radio" name="userGender" value="1" title="男" :checked="(sysUser.userGender||1)==1">
+                            <input type="radio" name="userGender" value="2" title="女" :checked="(sysUser.userGender||1)==2">
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">个性签名</label>
+                        <div class="col-lg-10">
+                            <textarea name="userBio" placeholder="请输入内容" :value="sysUser.userBio" class="layui-textarea"></textarea>
+                        </div>
+                    </div>
+                    <input type="hidden" name="userId" :value="sysUser.userId" >
+                    <input type="hidden" name="userAccount" :value="sysUser.userAccount" >
+                    <input type="hidden" name="password" :value="sysUser.password" >
+                    <input type="hidden" name="createTime" :value="sysUser.createTime" >
+                    <input type="hidden" name="modifiedTime" :value="sysUser.modifiedTime" >
+
+                    <div class="layui-form-item">
+                        <div class="col-lg-12 text-center">
+                            <button class="layui-btn" lay-submit lay-filter="formDemo">确认修改</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        $(function(){
+           $("#myForm").ajaxForm({
+               url:"/user/center/updateUser",
+               data:$("#myForm").serialize(),
+               type:"post",
+               dataType:"json",
+               beforeSubmit:function(data){
+
+               },
+               success:function(data){
+                   if(data.success){
+                       location.reload();
+                   }else{
+                       alert(data.message);
+                   }
+               },
+               clearForm:true
+           })
+           $("#photoForm").ajaxForm({
+               beforeSubmit:function(data){
+
+               },
+               success:function(data){
+                   if(data.success){
+                       location.reload();
+                   }else{
+                       alert(data.message);
+                   }
+               },
+               clearForm:true
+           })
+        });
+
+        function updateUserPhoto(a){
+            var AllowImgFileSize=2*1024*1024;//2M大小
+            var reader = new FileReader();
+            reader.readAsDataURL(a.files[0]);
+            reader.onload = function (e) {
+                var ImgFileSize = reader.result.substring(reader.result.indexOf(",") + 1).length;//截取base64码部分（可选可不选，需要与后台沟通）
+                if (AllowImgFileSize != 0 && AllowImgFileSize < reader.result.length) {
+                    alert( '上传失败，请上传不大于2M的图片！');
+                    return;
+                }else{
+                    $("#photoImg").attr("src",reader.result);
+                    var formData = new FormData();
+                    formData.append("multipartFile",a.files[0]);
+                    $("#photoForm").submit();
+                }
+            }
+        }
+
+        layui.use(['form','laydate'], function(){
+            var form = layui.form;
+            //监听提交
+            form.on('submit(formDemo)', function(data){
+                // layer.msg(JSON.stringify(data.field));
+                return true;
+            });
+
+            var laydate = layui.laydate;
+            laydate.render({
+                elem:"#userBirthday",
+                format:"yyyy-MM-dd"
+            });
+
+            // var upload = layui.upload;
+            // //执行实例
+            // var uploadInst = upload.render({
+            //     elem: '#userPhoto',
+            //     url: '/upload/',
+            //     done: function(res){
+            //         //上传完毕回调
+            //     },
+            //     error: function(){
+            //         //请求异常回调
+            //     }
+            // });
+        });
+    </script>
+</div>
+<script>
+    var vue=new Vue({
+        el:"#vue_dom",
+        data:{
+            sysUser:reqData.sysUser
+        },
+        methods:{
+            getImageUrl:getImageUrl
+        }
+    });
+</script>
+</body>
+</html>

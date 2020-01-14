@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lovers.common.mapper.UserPhotoAlbumMapper">
+  <resultMap id="BaseResultMap" type="com.lovers.common.domain.UserPhotoAlbum">
+    <id column="album_id" jdbcType="INTEGER" property="albumId" />
+    <result column="album_name" jdbcType="VARCHAR" property="albumName" />
+    <result column="album_cover" jdbcType="INTEGER" property="albumCover" />
+    <result column="album_describe" jdbcType="VARCHAR" property="albumDescribe" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
+  </resultMap>
+
+</mapper>

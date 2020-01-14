@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- 创建人：wangzefeng-->
+    <!-- 创建时间：2019-09-28 00:04-->
+    <th:block th:include="/common/commonStatic :: header('首页')"></th:block>
+</head>
+<body>
+<th:block th:include="/common/commonStatic :: common-top"></th:block>
+
+<div id="vue_dom">
+
+    <div  class="col-lg-1">
+        <div id="nav-wrapper">
+            <div id="nav">
+                <div id="example-nav">
+                    <h3>Notification</h3>
+                    <ul>
+                        <li><a class=" active" href="/kendo-ui/notification/index">Basic usage</a></li>
+                        <li><a href="/kendo-ui/notification/position-stacking">Position and stacking</a></li>
+                        <li><a href="/kendo-ui/notification/templates">Templates</a></li>
+                        <li><a href="/kendo-ui/notification/events">Events</a></li>
+                        <li><a href="/kendo-ui/notification/api">API</a></li>
+                        <li><a href="/kendo-ui/notification/right-to-left-support">RTL support</a></li>
+                        <li><a href="/kendo-ui/notification/mvvm">MVVM</a></li>
+                        <li><a href="/kendo-ui/notification/angular">AngularJS</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-10">
+        <div class="container">
+            <div class="row" style="width:100%;text-align: center">
+                <div class="col-lg-12">
+                    <button type="button" class="btn btn-info" onclick="addMoodRecord()">
+                        <span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
+                        开始记录
+                    </button>
+                </div>
+            </div>
+
+            <div class="row" v-for="one in moodList" style="width: 700px;">
+                <div class="k-card-header">
+                    <div>
+                        <img class="k-card-image"  style="width: 40px;height: 40px;" :src="getImageUrl(one.sysUser.userPhoto)" />
+                        <span v-text="one.sysUser.userName"></span>
+                    </div>
+                    <a href="/mood/visitorByIds">{{one.visitorNumber||0}}个人点赞</a>
+                    <h3 class="k-card-title text-center"  v-text="one.recordTitle">Rome</h3>
+                    <h6 class="k-card-subtitle" v-text="one.recordContent">Capital of Italy</h6>
+                </div>
+                <img class="k-card-image" style="width: 700px;" :src="getImageUrl(one.recordImages)" />
+                <div class="k-card-body">
+                    <p>Ancient ruins such as the Forum and the Colosseum evoke the power of the former Roman Empire. </p>
+                </div>
+                <div class="k-card-actions k-card-actions-stretched">
+                    <a>
+                        <svg class="icon" aria-hidden="true" ><use xlink:href="#icon-dianzan"></use></svg>点赞
+                    </a>
+                    <a>
+                        <svg class="icon" aria-hidden="true"><use xlink:href="#icon-pingjia"></use></svg>评论
+                    </a>
+
+                </div>
+            </div>
+
+            <!--<div class="k-card row">-->
+                <!--<div class="k-card-header">-->
+                    <!--<h5 class="k-card-title">Rome</h5>-->
+                    <!--<h6 class="k-card-subtitle">Capital of Italy</h6>-->
+                <!--</div>-->
+                <!--<img class="k-card-image" style="width: 100%;" src="/image/mood/test.jpeg" />-->
+                <!--<div class="k-card-body">-->
+                    <!--<p>Rome is a sprawling, cosmopolitan city with nearly 3,000 years of globally influential art, architecture and culture on display.</p>-->
+                    <!--<p>Ancient ruins such as the Forum and the Colosseum evoke the power of the former Roman Empire. </p>-->
+                <!--</div>-->
+                <!--<div class="k-card-actions k-card-actions-stretched">-->
+                    <!--<span class="k-card-action"><span class="k-button k-flat k-primary">Map</span></span>-->
+                    <!--<span class="k-card-action"><span class="k-button k-flat k-primary">Weather</span></span>-->
+                <!--</div>-->
+            <!--</div>-->
+
+        </div>
+        <th:block th:include="/common/commonStatic :: common-footer"></th:block>
+
+    </div>
+</div>
+
+<style>
+    .container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .container .row{
+        padding: 5px;
+    }
+    .container .row>div{
+        margin: 5px;
+    }
+    .container .row::after{
+        display: block;
+        border-bottom: 1px solid #f6f6f6;
+        content: "";
+    }
+
+</style>
+
+<script>
+
+    var vue=new Vue({
+        el:"#vue_dom",
+        data:{
+            moodList:null
+        },
+        methods:{
+            getImageUrl:getImageUrl
+        }
+    });
+
+    $(function(){
+        $.ajax({
+            url:"/mood/moodList",
+            type:"GET",
+            dataType:"json",
+            success:function(data){
+                console.log(data)
+                vue.moodList=data.data;
+            }
+        })
+
+    });
+
+    function addMoodRecord(){
+        layui.use('layer', function(){
+            layer.open({
+                type: 2,
+                shade: 0.3,
+                area: ['0','0'],
+                maxmin: true,
+                time:1,
+                content: '/mood/toAddOrEditMood',
+                zIndex: 2, //重点1
+                end: function(layero){
+                    layer.open({
+                        type: 2,
+                        shade: 0.3,
+                        area: ['800px','700px'],
+                        maxmin: true,
+                        anim: 2,
+                        content: '/mood/toAddOrEditMood',
+                        zIndex: 3, //重点1
+                        success: function(layero){
+                            layer.setTop(layero); //重点2
+                        }
+                    });
+                }
+            });
+
+        });
+    }
+
+
+
+
+</script>
+</body>
+</html>

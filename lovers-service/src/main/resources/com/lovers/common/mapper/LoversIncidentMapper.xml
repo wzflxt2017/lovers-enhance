@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lovers.common.mapper.LoversIncidentMapper">
+  <resultMap id="BaseResultMap" type="com.lovers.common.domain.LoversIncident">
+    <id column="incident_id" jdbcType="INTEGER" property="incidentId" />
+    <result column="incident_title" jdbcType="VARCHAR" property="incidentTitle" />
+    <result column="incident_content" jdbcType="VARCHAR" property="incidentContent" />
+    <result column="incident_time" jdbcType="TIMESTAMP" property="incidentTime" />
+    <result column="incident_create_time" jdbcType="TIMESTAMP" property="incidentCreateTime" />
+    <result column="user_id_man" jdbcType="INTEGER" property="userIdMan" />
+    <result column="user_id_woman" jdbcType="INTEGER" property="userIdWoman" />
+    <result column="user_id_create" jdbcType="INTEGER" property="userIdCreate" />
+    <result column="incident_images" jdbcType="VARCHAR" property="incidentImages" />
+  </resultMap>
+
+</mapper>

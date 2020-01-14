@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- 创建人：wangzefeng-->
+    <!-- 创建时间：2019-10-22 16:00-->
+    <th:block th:include="/common/commonStatic :: header('首页')"></th:block>
+</head>
+<body>
+<form id="myForm">
+
+    <div class="demo-section k-content" style="width: 99%">
+        <ul class="fieldlist">
+            <li>
+                <label for="simple-input">标题</label>
+                <input id="simple-input" name="recordTitle" type="text" class="k-textbox" style="width: 100%;" placeholder="为你的心情加一个标题吧" />
+            </li>
+            <li>
+                <label for="recordImages">图片</label>
+                <button type="button" class="btn btn-info" onclick="openUploadWindow()">上传图片</button>
+                <input id="recordImages" name="recordImages" type="hidden" class="k-textbox" style="width: 100%;" />
+                <div id="moodUploadImgs">
+
+                </div>
+            </li>
+            <li>
+                <label for="recordContent">正文</label>
+                <textarea id="recordContent" name="recordContent" class="k-textbox" style="width: 100%;height:400px;"  placeholder="记录详细的心情记录吧"  ></textarea>
+            </li>
+            <li style="text-align: center">
+                <button class="btn btn-info">
+                    <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                    记录</button>
+            </li>
+        </ul>
+        <style>
+            .fieldlist {
+                margin: 0 0 -2em;
+                padding: 0;
+            }
+
+            .fieldlist li {
+                list-style: none;
+                padding-bottom: 2em;
+            }
+
+            .fieldlist label {
+                display: block;
+                padding-bottom: 1em;
+                font-weight: bold;
+                text-transform: uppercase;
+                font-size: 12px;
+                color: #444;
+            }
+
+        </style>
+    </div>
+
+</form>
+
+<div id="uploadWindow" style="display: none;">
+
+
+</div>
+<script>
+
+    var imageIds="";
+
+    function openUploadWindow() {
+
+        //通过这种方式弹出的层，每当它被选择，就会置顶。
+        layui.use('layer', function(){
+            layer.open({
+                type: 2,
+                shade: 0.3,
+                area: ['500px','600px'],
+                maxmin: true,
+                content: '/mood/toUploadImage',
+                zIndex: layer.zIndex, //重点1
+                success: function(layero){
+                    console.log(layero)
+                    layer.setTop(layero); //重点2
+                },
+                cancel:function (index,layero) {
+                    var body = layer.getChildFrame('body', index);
+                    var iframeWin = window[layero.find('iframe')[0]['name']];
+                    imageIds= iframeWin.getRetData();
+                    $("#recordImages").val(imageIds);
+                    loadImagesByIds("/sys/file/loadImagesByIds","moodUploadImgs",iframeWin.getRetData());
+                }
+            });
+        });
+    }
+
+    $(function(){
+        $("#myForm").ajaxForm({
+            url:"/mood/addMood",
+            data:$("#myForm").serialize(),
+            type:"post",
+            dataType:"json",
+            beforeSubmit:function(data){
+                console.log(data);
+            },
+            success:function(data){
+                if(data){
+                    retData=data.data;
+                }
+                closeSelf()
+            },
+            clearForm:true
+        })
+    })
+
+</script>
+</body>
+</html>

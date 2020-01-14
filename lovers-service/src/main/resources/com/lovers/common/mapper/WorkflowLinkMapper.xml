@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lovers.common.mapper.WorkflowLinkMapper">
+  <resultMap id="BaseResultMap" type="com.lovers.common.domain.WorkflowLink">
+    <id column="link_id" jdbcType="INTEGER" property="linkId" />
+    <result column="workflow_id" jdbcType="INTEGER" property="workflowId" />
+    <result column="link_name" jdbcType="VARCHAR" property="linkName" />
+    <result column="link_key" jdbcType="VARCHAR" property="linkKey" />
+    <result column="link_pre_node" jdbcType="INTEGER" property="linkPreNode" />
+    <result column="link_next_node" jdbcType="INTEGER" property="linkNextNode" />
+  </resultMap>
+
+</mapper>

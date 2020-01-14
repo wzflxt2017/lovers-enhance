@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <th:block th:include="/common/commonStatic :: header('首页')"></th:block>
+</head>
+<body>
+
+<div>
+    <div class="demo-section k-content">
+        <input name="files" id="files" type="file" />
+    </div>
+</div>
+
+<script>
+    $(function(){
+        var imageIds="";
+        $("#files").kendoUpload({
+            async: {
+                chunkSize: 11000,// bytes
+                saveUrl: "/mood/uploadImages",
+                autoUpload: false
+            },
+            validation: {
+                allowedExtensions: [".jpg",".jpeg",".png"]
+            },
+            success:function (e) {
+                console.log(e);
+                var response = e.response;
+                if(response&&response.data){
+                    for(var i in response.data){
+                        imageIds+=response.data[i].fileId+",";
+                    }
+                    if(!isEmpty(imageIds)){
+                        imageIds=imageIds.substr(0,imageIds.length-1);
+                        retData=imageIds;
+                    }
+                }
+            }
+        });
+    })
+</script>
+
+</body>
+</html>

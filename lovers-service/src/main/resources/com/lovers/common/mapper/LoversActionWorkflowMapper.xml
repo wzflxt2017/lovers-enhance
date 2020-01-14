@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lovers.common.mapper.LoversActionWorkflowMapper">
+  <resultMap id="BaseResultMap" type="com.lovers.common.domain.LoversActionWorkflow">
+    <id column="action_id" jdbcType="INTEGER" property="actionId" />
+    <result column="originator_id" jdbcType="INTEGER" property="originatorId" />
+    <result column="originator_name" jdbcType="VARCHAR" property="originatorName" />
+    <result column="action_start_time" jdbcType="TIMESTAMP" property="actionStartTime" />
+    <result column="action_end_time" jdbcType="TIMESTAMP" property="actionEndTime" />
+    <result column="actual_start_time" jdbcType="TIMESTAMP" property="actualStartTime" />
+    <result column="actual_end_time" jdbcType="TIMESTAMP" property="actualEndTime" />
+    <result column="action_site" jdbcType="VARCHAR" property="actionSite" />
+    <result column="actual_site" jdbcType="VARCHAR" property="actualSite" />
+    <result column="action_content" jdbcType="VARCHAR" property="actionContent" />
+    <result column="actual_content" jdbcType="VARCHAR" property="actualContent" />
+    <result column="action_outlay" jdbcType="DOUBLE" property="actionOutlay" />
+    <result column="actual_outlay" jdbcType="DOUBLE" property="actualOutlay" />
+    <result column="examine_id" jdbcType="INTEGER" property="examineId" />
+    <result column="examine_name" jdbcType="VARCHAR" property="examineName" />
+    <result column="examine_time" jdbcType="TIMESTAMP" property="examineTime" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="action_images" jdbcType="VARCHAR" property="actionImages" />
+  </resultMap>
+
+</mapper>

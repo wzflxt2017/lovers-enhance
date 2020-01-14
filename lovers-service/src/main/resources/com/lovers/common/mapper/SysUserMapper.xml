@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lovers.common.mapper.SysUserMapper">
+  <resultMap id="BaseResultMap" type="com.lovers.common.domain.SysUser">
+    <id column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="user_account" jdbcType="VARCHAR" property="userAccount" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="full_name" jdbcType="VARCHAR" property="fullName" />
+    <result column="user_bio" jdbcType="VARCHAR" property="userBio" />
+    <result column="user_gender" jdbcType="INTEGER" property="userGender" />
+    <result column="user_level" jdbcType="INTEGER" property="userLevel" />
+    <result column="user_role" jdbcType="VARCHAR" property="userRole" />
+    <result column="user_email" jdbcType="VARCHAR" property="userEmail" />
+    <result column="user_birthday" jdbcType="TIMESTAMP" property="userBirthday" />
+    <result column="user_address" jdbcType="VARCHAR" property="userAddress" />
+    <result column="user_location" jdbcType="VARCHAR" property="userLocation" />
+    <result column="user_photo" jdbcType="INTEGER" property="userPhoto" />
+    <result column="user_state" jdbcType="INTEGER" property="userState" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="modified_time" jdbcType="TIMESTAMP" property="modifiedTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    user_id, user_account, password, user_name, full_name, user_bio, user_gender, user_level,
+    user_role, user_email, user_birthday, user_address, user_location, user_photo, user_state,
+    create_time, modified_time
+  </sql>
+
+  <select id="selectByAccount" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_user
+    where user_account = #{userAccount,jdbcType=VARCHAR}
+
+  </select>
+
+  <select id="selectFriendByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+      distinct
+    <include refid="Base_Column_List" />
+    from sys_user s
+    where s.user_id in(select f.friend_id from user_friend f where f.user_id=${userId,jdbcType=INTEGER}) or s.user_id=${userId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectFriendByMessage" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+      distinct
+    <include refid="Base_Column_List" />
+    from sys_user s left join user_message m on s.user_id=m.sender_id or s.user_id=m.receiver_id
+    where m.sender_id =${userId,jdbcType=INTEGER} or m.receiver_id =${userId,jdbcType=INTEGER}
+  </select>
+
+  <select id="findAllMessageUsersByUserId"  resultMap="BaseResultMap">
+    select
+      distinct
+    <include refid="Base_Column_List" />
+    from sys_user s left join user_message m on s.user_id=m.sender_id or s.user_id=m.receiver_id
+    where ((m.sender_id =#{userId,jdbcType=INTEGER} and m.is_read!=3 )or (m.receiver_id =#{userId,jdbcType=INTEGER} and m.is_read!=4 )) and s.user_id!=#{userId,jdbcType=INTEGER}
+  </select>
+
+</mapper>

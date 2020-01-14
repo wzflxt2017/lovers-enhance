@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lovers.common.mapper.LoversSpaceMapper">
+  <resultMap id="BaseResultMap" type="com.lovers.common.domain.LoversSpace">
+    <id column="space_id" jdbcType="INTEGER" property="spaceId" />
+    <result column="space_name" jdbcType="VARCHAR" property="spaceName" />
+    <result column="user_id_man" jdbcType="INTEGER" property="userIdMan" />
+    <result column="user_id_woman" jdbcType="INTEGER" property="userIdWoman" />
+    <result column="space_background" jdbcType="INTEGER" property="spaceBackground" />
+    <result column="space_content" jdbcType="VARCHAR" property="spaceContent" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+
+</mapper>
