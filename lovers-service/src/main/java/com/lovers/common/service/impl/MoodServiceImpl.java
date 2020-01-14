@@ -21,7 +21,7 @@ import java.util.List;
 public class MoodServiceImpl  implements MoodService {
 
     @Autowired
-    UserMoodRecordMapper userMoodRecordMapper;
+    private UserMoodRecordMapper userMoodRecordMapper;
 
 
     public List<UserMoodRecord> findPage(List<SysUser> sysUsers) {

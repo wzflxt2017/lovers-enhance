@@ -1,0 +1,60 @@
+##################################开发环境配置#############################################
+lovers:
+  rootPath: /Users/wangzefeng/loverUploadFile/
+  projectPath: /
+github:
+  client:
+    id: dbff3cbcff6c6e268db3
+    secret: e5949a2297fe8b84e07c5a37c8677d90eaacfeef
+  redirect:
+    uri: http://localhost:8883/callback
+
+spring:
+  http:
+    encoding:
+      charset: utf-8
+      force: true
+      force-request: true
+      force-response: true
+  aop:
+    proxy-target-class: true
+  model:
+    packages: com.lovers
+    jars: lovers-api-1.0.0.jar
+  log:
+    dir: ./logs
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+  mvc:
+      view:
+        suffix: .html
+  resources:
+      static-locations: classpath:/resources/,classpath:/static/,classpath:/public/,classpath:/templates/
+
+dubbo:
+  application:
+    ###########注册到注册中心的名称############
+    name: lovers
+  ###########采用协议和端口号################
+  protocol:
+    ###########采用dubbo协议####################
+    name: dubbo
+    ###########发布dubbo端口号为20880###########
+    port: 20880
+  registry:
+    ###########注册中心地址#####################
+    address: zookeeper://192.168.174.129:2181
+    check: false
+    timeout: 10000
+  provider:
+    timeout: 50000
+  annotation:
+    ############实现类扫包范围###################
+    package: com.lovers
+  consumer:
+    timeout: 5000
+    check: false
+    retries: 0
+server:
+  port: 12125
+
