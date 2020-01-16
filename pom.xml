@@ -37,6 +37,7 @@
 
         <jackson.version>2.9.2</jackson.version>
 
+        <aspectjweaver.version>1.8.11</aspectjweaver.version>
 
         <!--&lt;!&ndash; spring相关 &ndash;&gt;-->
         <!--<spring.version>4.3.16.RELEASE</spring.version>-->

@@ -1,6 +1,7 @@
 package com.lovers.common.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.lovers.common.annotation.DemoAnnotation;
 import com.lovers.common.base.constants.CommonConstants;
 import com.lovers.common.base.controller.CommonController;
 import com.lovers.common.domain.SysUser;
@@ -29,6 +30,7 @@ public class LoginController extends CommonController {
 
     @ResponseBody
     @RequestMapping("/login")
+    @DemoAnnotation("demo")
     public Object login(){
         String userAccount = getParam("userAccount");
         String password = getParam("password");
