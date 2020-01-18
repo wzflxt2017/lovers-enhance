@@ -58,7 +58,7 @@
     from user_mood_record
     where user_id in(
     <foreach collection="sysUsers" item="sysUser" separator=",">
-      ${sysUser.userId}
+      #{sysUser.userId}
     </foreach>
     )
       order by create_time

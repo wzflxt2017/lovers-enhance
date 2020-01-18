@@ -26,7 +26,7 @@
     <div class="container">
         <div class="panel panel-success">
             <div class="panel-heading">
-                <h3 class="panel-title">个人信息</h3>
+                <h3 class="panel-title">个人信息<a href="http://www.baidu.com">ssssss</a></h3>
             </div>
             <div class="panel-body" style="padding: 20px;">
                 <div class="col-lg-4" style="padding-left: 50px;">
@@ -138,6 +138,13 @@
                },
                clearForm:true
            })
+            //跨域测试
+            $.ajax({
+                url:"http://localhost:8088/",
+                success:function(data){
+                    console.log(data)
+                }
+            })
         });
 
         function updateUserPhoto(a){

@@ -78,3 +78,6 @@ dubbo:
 mybatis:
   mapper-locations: classpath:/com/lovers/common/mapper/*.xml
   type-aliases-package: com.lovers.common.domain
+logging:
+  level:
+    com.lovers.common.mapper: DEBUG

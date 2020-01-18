@@ -9,6 +9,7 @@ import com.lovers.common.mapper.UserMessageMapper;
 import com.lovers.common.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
 
@@ -36,7 +37,9 @@ public class UserServiceimpl implements UserService {
     }
 
     public SysUser findById(Integer userId) {
-        return null;
+        SysUser sysUser = new SysUser();
+        sysUser.setUserId(userId);
+        return sysUserMapper.selectOne(sysUser);
     }
 
     public List<SysUser> searchUsersByNameOrAccount(String userName) {
@@ -44,11 +47,13 @@ public class UserServiceimpl implements UserService {
     }
 
     public List<SysUser> selectFriendById(Integer userId) {
-        return null;
+        List<SysUser> sysUsers = sysUserMapper.selectFriendByUserId(userId);
+        return sysUsers;
     }
 
     public List<SysUser> findAll(Integer userId) {
-        return null;
+        List<SysUser> sysUsers = sysUserMapper.selectFriendByUserId(userId);
+        return sysUsers;
     }
 
     public List<SysUser> findAllByMessage(Integer userId) {
@@ -56,7 +61,10 @@ public class UserServiceimpl implements UserService {
     }
 
     public void updateUser(SysUser sysUser) {
-
+        Example example=new Example(SysUser.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("userId",sysUser.getUserId());
+        sysUserMapper.updateByExample(sysUser,example);
     }
 
     public void addFriends(SysUser self, List<Integer> friendIds) {
@@ -76,6 +84,7 @@ public class UserServiceimpl implements UserService {
     }
 
     public List<SysUser> findAllMessageUsersByUserId(Integer userId) {
-        return null;
+        List<SysUser> users = sysUserMapper.findAllMessageUsersByUserId(userId);
+        return users;
     }
 }

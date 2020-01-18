@@ -40,7 +40,6 @@ public class UserController extends CommonController {
     public String userCenter(){
         SysUser sysUser = getSysUser();
         reqData.put("sysUser",sysUser);
-//        setRequestAttr("sysUser",sysUser);
         return "java/user/userCenter";
     }
 

@@ -39,7 +39,7 @@
       distinct
     <include refid="Base_Column_List" />
     from sys_user s
-    where s.user_id in(select f.friend_id from user_friend f where f.user_id=${userId,jdbcType=INTEGER}) or s.user_id=${userId,jdbcType=INTEGER}
+    where s.user_id in(select f.friend_id from user_friend f where f.user_id=#{userId,jdbcType=INTEGER}) or s.user_id=#{userId,jdbcType=INTEGER}
   </select>
 
   <select id="selectFriendByMessage" parameterType="java.lang.Integer" resultMap="BaseResultMap">

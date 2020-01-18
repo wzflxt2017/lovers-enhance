@@ -8,6 +8,7 @@ import com.lovers.common.service.MoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -25,7 +26,10 @@ public class MoodServiceImpl  implements MoodService {
 
 
     public List<UserMoodRecord> findPage(List<SysUser> sysUsers) {
-        List<UserMoodRecord> userMoodRecords = userMoodRecordMapper.selectByUsers(sysUsers);
+        List<UserMoodRecord> userMoodRecords=new ArrayList<>();
+        if(sysUsers!=null){
+            userMoodRecords = userMoodRecordMapper.selectByUsers(sysUsers);
+        }
         return userMoodRecords;
     }
 

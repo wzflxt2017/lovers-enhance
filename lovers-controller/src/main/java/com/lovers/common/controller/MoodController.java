@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -57,31 +60,29 @@ public class MoodController extends CommonController {
     @ResponseBody
     @RequestMapping("/uploadImages")
     public Object uploadImages(List<MultipartFile> files){
+        SysUser sysUser = getSysUser();
+        String module="mood";
         List<SysFile> list=new ArrayList<>();
         for(MultipartFile file:files){
-//            String fileName = file.getOriginalFilename();
-//            String[] split = fileName.split("\\.");
-//            SysFile sysFile = new SysFile();
-//            sysFile.setFileFullName(fileName);
-//            sysFile.setFileSuffix("."+split[1]);
-//            sysFile.setFileName(split[0]);
-//            sysFile.setFileType(split[1]);
-//            sysFile.setForModule("mood");
-//            sysFile.setUserId(sysUser.getUserId());
-//            sysFile.setUploadTime(Calendar.getInstance().getTime());
-//            int insert = sysFileService.insert(sysFile);
-//            try {
-//                File file1 = new File(getRootPath()+"mood"+ File.separator+sysFile.getFileId()+"_"+sysFile.getFileFullName());
-//                list.add(sysFile);
-//                if(!file1.exists()){
-//                    file1.mkdirs();
-//                }
-//                file.transferTo(file1);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-            SysFile mood = sysFileService.uploadImageByModule("mood", getSysUser());
-            list.add(mood);
+
+            String fileName = file.getOriginalFilename();
+            String[] split = fileName.split("\\.");
+            SysFile sysFile = new SysFile();
+            sysFile.setFileFullName(fileName);
+            sysFile.setFileSuffix("."+split[1]);
+            sysFile.setFileName(split[0]);
+            sysFile.setFileType(split[1]);
+            sysFile.setForModule(module);
+            sysFile.setUserId(sysUser.getUserId());
+            sysFile.setUploadTime(Calendar.getInstance().getTime());
+            int insert = sysFileService.insert(sysFile);
+            try {
+                File file1 = new File(rootPath+module+ File.separator+sysFile.getFileId()+"_"+sysFile.getFileFullName());
+                file.transferTo(file1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            list.add(sysFile);
         }
         result.setSuccess(true);
         result.setData(list);
