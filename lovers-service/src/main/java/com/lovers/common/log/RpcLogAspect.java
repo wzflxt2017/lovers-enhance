@@ -38,7 +38,7 @@ public class RpcLogAspect {
     public void doAfterInServiceLayer(JoinPoint joinPoint) {
         log.info("doAfterInServiceLayer");
         endTime = System.currentTimeMillis();
-        log.info("所用时间为：{}秒",(endTime-startTime)/1000);
+        log.info("所用时间为：{}毫秒",(endTime-startTime));
     }
 
     @Around("pointCut()")
