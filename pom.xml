@@ -19,7 +19,7 @@
         <spring-boot.version>2.1.8.RELEASE</spring-boot.version>
         <org.mybatis.spring.boot>2.1.1</org.mybatis.spring.boot>
         <!-- 数据库相关 -->
-        <mysql.connector.java.version>6.0.5</mysql.connector.java.version>
+        <mysql.connector.java.version>8.0.28</mysql.connector.java.version>
         <tk.mybatis.version>4.0.1</tk.mybatis.version>
         <com.alibaba.version>1.1.14</com.alibaba.version>
         <!--dubbo-->
